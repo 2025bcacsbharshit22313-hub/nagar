@@ -51,24 +51,48 @@ The outputs are then combined and summarized into **three possible health issues
 
 ## ⚡ Quickstart
 
-1. **Clone the repo:**
-   ```bash
-   git clone https://github.com/ahmadvh/AI-Agents-for-Medical-Diagnostics.git
-   cd AI-Agents-for-Medical-Diagnostics
-   ```
-2. **Create a virtual environment and install dependencies:**
-    ```bash
-    python -m venv venv
-    source venv/bin/activate  # On Windows: venv\Scripts\activate
-    pip install -r requirements.txt
-    ```
-3. **Set up your API credentials:**
-    - Create a file named apikey.env in the project root.
-    - Add your OpenAI (or other LLM provider) credentials:
-    ```bash
-    OPENAI_API_KEY=your_api_key_here
-    ```
-4. **Run the system:** `python main.py`
+**Step 1: Clone the repository**
+```bash
+git clone https://github.com/ahmadvh/AI-Agents-for-Medical-Diagnostics.git
+cd AI-Agents-for-Medical-Diagnostics
+```
+
+**Step 2: Create and activate virtual environment**
+
+Windows:
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
+macOS/Linux:
+```bash
+python -m venv venv
+source venv/bin/activate
+```
+
+**Step 3: Install all required dependencies**
+```bash
+pip install -r requirements.txt
+```
+
+> If installation fails, run:
+> ```bash
+> pip install langchain langchain-community langchain-openai langchain-experimental python-dotenv langchain_ollama reportlab
+> ```
+
+**Step 4: Create `apikey.env` file and add API key**
+
+Create a file named `apikey.env` in the project root with the following content:
+```
+OPENAI_API_KEY=your_openai_api_key_here
+```
+
+> Replace `your_openai_api_key_here` with your actual key from https://platform.openai.com/api-keys
+
+**Step 5: Run the project**
+```bash
+python Main.py
+```
 ---
 
 ## 🔮 Future Enhancements
