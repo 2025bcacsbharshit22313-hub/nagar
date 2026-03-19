@@ -1,56 +1,37 @@
-# Importing the needed modules 
+# Importing the needed modules
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-from dotenv import load_dotenv
-from concurrent.futures import ThreadPoolExecutor, as_completed
-from Utils.Agents import Cardiologist, Psychologist, Pulmonologist, MultidisciplinaryTeam
-import json, os
 from pathlib import Path
+import pipeline  # loads apikey.env and GEMINI_API_KEY via module-level side-effect
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-# Loading API key from a dotenv file.
-load_dotenv(dotenv_path='apikey.env')
-
-# read the medical report
-report_path = Path("Medical Reports") / "Medical Rerort - Michael Johnson - Panic Attack Disorder.txt"
+# Read the medical report
+report_path = (
+    Path(__file__).parent
+    / "Medical Reports"
+    / "Medical Rerort - Michael Johnson - Panic Attack Disorder.txt"
+)
 with open(report_path, "r") as file:
     medical_report = file.read()
 
+# Run the full diagnosis pipeline
+result = pipeline.run_full_diagnosis(medical_report)
 
-agents = {
-    "Cardiologist": Cardiologist(medical_report),
-    "Psychologist": Psychologist(medical_report),
-    "Pulmonologist": Pulmonologist(medical_report)
-}
-
-# Function to run each agent and get their response
-def get_response(agent_name, agent):
-    response = agent.run()
-    return agent_name, response
-
-# Run the agents concurrently and collect responses
-responses = {}
-with ThreadPoolExecutor() as executor:
-    futures = {executor.submit(get_response, name, agent): name for name, agent in agents.items()}
-    
-    for future in as_completed(futures):
-        agent_name, response = future.result()
-        responses[agent_name] = response
-
-team_agent = MultidisciplinaryTeam(
-    cardiologist_report=responses["Cardiologist"],
-    psychologist_report=responses["Psychologist"],
-    pulmonologist_report=responses["Pulmonologist"]
+# Build output text
+final_diagnosis_text = (
+    "### Cardiologist:\n\n"
+    + result["cardiologist"]
+    + "\n\n### Psychologist:\n\n"
+    + result["psychologist"]
+    + "\n\n### Pulmonologist:\n\n"
+    + result["pulmonologist"]
+    + "\n\n### Final Diagnosis:\n\n"
+    + result["final_diagnosis"]
 )
 
-# Run the MultidisciplinaryTeam agent to generate the final diagnosis
-final_diagnosis = team_agent.run()
-final_diagnosis_text = "### Final Diagnosis:\n\n" + final_diagnosis
-txt_output_path = Path("Results") / "final_diagnosis.txt"
-
-# Ensure the directory exists
+# Save to Results/final_diagnosis.txt (pathlib, cross-platform)
+txt_output_path = Path(__file__).parent / "Results" / "final_diagnosis.txt"
 txt_output_path.parent.mkdir(parents=True, exist_ok=True)
 
-# Write the final diagnosis to the text file
 with open(txt_output_path, "w") as txt_file:
     txt_file.write(final_diagnosis_text)
 
