@@ -16,13 +16,13 @@ It is **not intended for clinical use**.
 - Added **MIT License**  
 - Fixed bugs and updated `requirements.txt`  
 - Added `.gitignore`  
-- Upgraded core LLM to **GPT-5**  
+- **Migrated from OpenAI (GPT) to Google Gemini API**  
 
 ---
 
 ## 🚀 How It Works
 
-In the current version, we use **three AI agents (GPT-5)**, each specializing in a different aspect of medical analysis.  
+In the current version, we use **three AI agents (Gemini)**, each specializing in a different aspect of medical analysis.  
 A medical report is passed to all agents, which run **in parallel (threading)** and return their findings.  
 The outputs are then combined and summarized into **three possible health issues** with reasoning.
 
@@ -77,17 +77,17 @@ pip install -r requirements.txt
 
 > If installation fails, run:
 > ```bash
-> pip install langchain langchain-community langchain-openai langchain-experimental python-dotenv langchain_ollama reportlab
+> pip install langchain langchain-community langchain-experimental python-dotenv langchain_ollama reportlab google-generativeai
 > ```
 
 **Step 4: Create `apikey.env` file and add API key**
 
 Create a file named `apikey.env` in the project root with the following content:
 ```
-OPENAI_API_KEY=your_openai_api_key_here
+GEMINI_API_KEY=your_gemini_api_key_here
 ```
 
-> Replace `your_openai_api_key_here` with your actual key from https://platform.openai.com/api-keys
+> Replace `your_gemini_api_key_here` with your actual key from https://aistudio.google.com/app/apikey
 
 **Step 5: Run the project**
 ```bash

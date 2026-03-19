@@ -1,5 +1,6 @@
+import os
+import google.generativeai as genai
 from langchain_core.prompts import PromptTemplate
-from langchain_openai import ChatOpenAI
 
 class Agent:
     def __init__(self, medical_report=None, role=None, extra_info=None):
@@ -8,8 +9,9 @@ class Agent:
         self.extra_info = extra_info
         # Initialize the prompt based on role and other info
         self.prompt_template = self.create_prompt_template()
-        # Initialize the model
-        self.model = ChatOpenAI(temperature=0, model="gpt-5")
+        # Initialize the Gemini model
+        genai.configure(api_key=os.environ["GEMINI_API_KEY"])
+        self.model = genai.GenerativeModel("gemini-1.5-flash")
 
     def create_prompt_template(self):
         if self.role == "MultidisciplinaryTeam":
@@ -57,8 +59,8 @@ class Agent:
         print(f"{self.role} is running...")
         prompt = self.prompt_template.format(medical_report=self.medical_report)
         try:
-            response = self.model.invoke(prompt)
-            return response.content
+            response = self.model.generate_content(prompt)
+            return response.text
         except Exception as e:
             print("Error occurred:", e)
             return None
