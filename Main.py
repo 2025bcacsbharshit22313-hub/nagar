@@ -3,15 +3,16 @@
 from dotenv import load_dotenv
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from Utils.Agents import Cardiologist, Psychologist, Pulmonologist, MultidisciplinaryTeam
-from dotenv import load_dotenv
 import json, os
+from pathlib import Path
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # Loading API key from a dotenv file.
 load_dotenv(dotenv_path='apikey.env')
 
 # read the medical report
-with open("Medical Reports\Medical Rerort - Michael Johnson - Panic Attack Disorder.txt", "r") as file:
+report_path = Path("Medical Reports") / "Medical Rerort - Michael Johnson - Panic Attack Disorder.txt"
+with open(report_path, "r") as file:
     medical_report = file.read()
 
 
@@ -44,10 +45,10 @@ team_agent = MultidisciplinaryTeam(
 # Run the MultidisciplinaryTeam agent to generate the final diagnosis
 final_diagnosis = team_agent.run()
 final_diagnosis_text = "### Final Diagnosis:\n\n" + final_diagnosis
-txt_output_path = "results/final_diagnosis.txt"
+txt_output_path = Path("Results") / "final_diagnosis.txt"
 
 # Ensure the directory exists
-os.makedirs(os.path.dirname(txt_output_path), exist_ok=True)
+txt_output_path.parent.mkdir(parents=True, exist_ok=True)
 
 # Write the final diagnosis to the text file
 with open(txt_output_path, "w") as txt_file:
