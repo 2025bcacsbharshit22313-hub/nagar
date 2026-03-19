@@ -53,8 +53,8 @@ The outputs are then combined and summarized into **three possible health issues
 
 **Step 1: Clone the repository**
 ```bash
-git clone https://github.com/ahmadvh/AI-Agents-for-Medical-Diagnostics.git
-cd AI-Agents-for-Medical-Diagnostics
+git clone https://github.com/2025bcacsbharshit22313-hub/nagar.git
+cd nagar
 ```
 
 **Step 2: Create and activate virtual environment**
@@ -75,24 +75,58 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-> If installation fails, run:
-> ```bash
-> pip install langchain langchain-community langchain-experimental python-dotenv langchain_ollama reportlab google-generativeai
-> ```
+**Step 4: Set your Gemini API key**
 
-**Step 4: Create `apikey.env` file and add API key**
+Option A – environment variable (recommended):
+```bash
+# macOS / Linux
+export GEMINI_API_KEY=your_gemini_api_key_here
 
-Create a file named `apikey.env` in the project root with the following content:
+# Windows (PowerShell)
+$env:GEMINI_API_KEY="your_gemini_api_key_here"
+```
+
+Option B – local `.env` file (development only, **never commit real keys**):
+
+Create a file named `apikey.env` in the project root:
 ```
 GEMINI_API_KEY=your_gemini_api_key_here
 ```
 
-> Replace `your_gemini_api_key_here` with your actual key from https://aistudio.google.com/app/apikey
+> Get your free key at https://aistudio.google.com/app/apikey
 
-**Step 5: Run the project**
+**Step 5a: Run the web app**
+```bash
+uvicorn app:app --reload
+```
+Then open http://127.0.0.1:8000 in your browser.  
+Paste any medical report text into the textarea and click **Run Diagnosis**.
+
+**Step 5b: Run the CLI script**
 ```bash
 python Main.py
 ```
+Output is saved to `Results/final_diagnosis.txt`.
+
+---
+
+## 🚀 Deploy for Free on Render
+
+Render offers a free tier for Python web services – no credit card required.
+
+1. **Fork / push** this repository to your GitHub account.
+2. Go to [https://render.com](https://render.com) and sign in with GitHub.
+3. Click **New → Web Service** and connect your repository.
+4. Render will detect `render.yaml` automatically and configure the service.
+5. In the Render dashboard → **Environment**, add:
+   | Key | Value |
+   |-----|-------|
+   | `GEMINI_API_KEY` | your actual Gemini API key |
+6. Click **Deploy**. After a few minutes you'll get a public URL like  
+   `https://ai-medical-diagnostics.onrender.com`.
+
+> **Note:** Free-tier Render services spin down after inactivity; the first request after a cold start may take ~30 seconds.
+
 ---
 
 ## 🔮 Future Enhancements
