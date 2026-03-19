@@ -7,3 +7,5 @@ reportlab
 google-generativeai
 fastapi
 uvicorn[standard]
+python-multipart
+pypdf

@@ -99,8 +99,13 @@ GEMINI_API_KEY=your_gemini_api_key_here
 ```bash
 uvicorn app:app --reload
 ```
-Then open http://127.0.0.1:8000 in your browser.  
-Paste any medical report text into the textarea and click **Run Diagnosis**.
+Then open **http://127.0.0.1:8000** in your browser.
+
+You can either:
+- **Upload a file** – click the upload area (or drag & drop) and select a `.txt` or `.pdf` patient report, then click **Run Diagnosis**.
+- **Paste text** – paste the report text directly into the textarea and click **Run Diagnosis**.
+
+Results from all three specialist agents and the final diagnosis are displayed directly on the page.
 
 **Step 5b: Run the CLI script**
 ```bash
