@@ -11,7 +11,7 @@ class Agent:
         self.prompt_template = self.create_prompt_template()
         # Initialize the Gemini model
         genai.configure(api_key=os.environ["GEMINI_API_KEY"])
-        self.model = genai.GenerativeModel("gemini-1.5-flash")
+        self.model = genai.GenerativeModel("gemini-2.5-flash")
 
     def create_prompt_template(self):
         if self.role == "MultidisciplinaryTeam":
